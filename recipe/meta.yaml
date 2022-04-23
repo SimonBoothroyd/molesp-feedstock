@@ -12,9 +12,11 @@ source:
 build:
   skip: True  # [win or py>39]
   number: 0
-  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
+  script:
+    - "{{ PYTHON }} setup.py build_gui"
+    - "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
   entry_points:
-  - molesp = molesp.cli:main
+    - molesp = molesp.cli:main
 
 requirements:
   build:
