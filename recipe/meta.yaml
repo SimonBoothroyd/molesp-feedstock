@@ -1,0 +1,72 @@
+{% set name = "molesp" %}
+{% set version = "0.0.1" %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  url: https://github.com/SimonBoothroyd/{{ name }}/archive/{{ version }}.tar.gz
+  sha256: f6d734cdd32e72299663bcec0c5822bb9a175a85bfd3b6512e09fa7e1db411ad
+
+build:
+  skip: True  # [win or py>39]
+  number: 0
+  script: "{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv"
+  entry_points:
+  - molesp = molesp.cli:main
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - {{ compiler('cxx') }}
+    - pybind11
+    - pybind11-abi
+    - cmake
+    - make
+    - nodejs =16
+  host:
+    - python
+    - pip
+    - pybind11
+  run:
+    - python
+    - pip
+
+      # Core dependencies
+    - numpy
+    - scipy
+      ## Molecule parsing / manipulation
+    - openff-toolkit-base
+    - rdkit
+      ## CLI
+    - click
+    - rich
+      ## GUI
+    - pydantic
+    - fastapi
+    - uvicorn
+      ## QC ESP Generation
+    - openff-recharge
+
+test:
+  imports:
+    - molesp
+
+about:
+  home: https://github.com/SimonBoothroyd/molesp
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: Generate and visualize the ESP at the surface of a molecule.
+  description: |
+    The `molesp` framework aims to offer a simple set of tools for generating and visualizing the 
+    electrostatic potential (ESP) projected onto the scaled van der Waal surface of a molecule.
+
+  doc_url: https://github.com/SimonBoothroyd/molesp
+  dev_url: https://github.com/SimonBoothroyd/molesp
+
+extra:
+  recipe-maintainers:
+    - simonboothroyd

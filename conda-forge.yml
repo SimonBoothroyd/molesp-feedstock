@@ -1,0 +1,8 @@
+channel_priority: flexible
+upload_on_branch: main
+github:
+  user_or_org: simonboothroyd
+channels:
+  targets:
+  -
+    - SimonBoothroyd
